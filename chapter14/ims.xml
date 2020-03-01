@@ -1,0 +1,11 @@
+
+    <gateway name="ims">
+        <param name="realm" value="ims.yn.chinamobile.com"/>
+        <param name="register-proxy" value="211.139.x.x"/>
+        <param name="username" value="+86871xxxxxxxx@ims.yn.chinamobile.com"/>
+        <param name="password" value="1234"/>
+        <param name="from-user" value="+86871xxxxxxxx"/>
+        <param name="from-domain" value="ims.yn.chinamobile.com"/>
+        <param name="register" value="true"/>
+        <param name="outbound-proxy" value="211.139.x.x"/>
+    </gateway>

@@ -1,0 +1,32 @@
+
+    <extension name="Number Game">
+      <condition field="destination_number" expression="^1$">
+        <action application="lua" data="numbers_game.lua"/>
+      </condition>
+    </extension>
+
+
+    <extension name="Video Me">
+      <condition field="destination_number" expression="^2$">
+        <action application="bridge" data="user/1007"/>
+      </condition>
+    </extension>
+
+
+    <extension name="ASR">
+        <condition field="destination_number" expression="^1234$">
+            <action application="answer"/>
+            <action application="set" data="tts_engine=flite"/>
+            <action application="set" data="tts_voice=kal"/>
+            <action application="play_and_detect_speech" data="say:please say yes or no detect:pocketsphinx yes_no"/>
+            <action application="log" data="INFO ${detect_speech_result}"/>
+        </condition>
+    </extension>
+
+
+    <extension name="ASR demo">
+        <condition field="destination_number" expression="^1234$">
+            <action application="answer"/>
+            <action application="lua" data="asr.lua"/>
+        </condition>
+    </extension>

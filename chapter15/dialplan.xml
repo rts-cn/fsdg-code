@@ -1,0 +1,145 @@
+
+    <action application="bind_meta_app" data="1 b s execute_extension::dx XML features"/>
+
+    <extension name="dx">
+        <condition field="destination_number" expression="^dx$">
+            <action application="answer"/>
+            <action application="read" data="11 11 'tone_stream://%(10000,0,350,440)' digits 5000 #"/>
+            <action application="execute_extension" data="is_transfer XML features"/>
+        </condition>
+    </extension>
+
+    <extension name="is_transfer">
+        <condition field="destination_number" expression="^is_transfer$"/>
+        <condition field="${digits}" expression="^(\d+)$">
+            <action application="transfer" data="-bleg ${digits} XML default"/>
+            <anti-action application="eval" data="cancel transfer"/>
+        </condition>
+    </extension>
+
+
+    <action application="bind_meta_app" data="4 b s execute_extension::att_xfer XML features"/>
+
+
+    <condition field="destination_number" expression="^att_xfer$">
+        <action application="read" data="3 4 'tone_stream://%(10000,0,350,440)' digits 30000 #"/>
+        <action application="set" data="origination_cancel_key=#"/>
+        <action application="att_xfer" data="user/${digits}@$${domain}"/>
+    </condition>
+
+
+    <extension name="rtp_multicast_page">
+        <condition field="destination_number" expression="^pagegroup$|^7243$">
+            <action application="answer"/>
+            <action application="esf_page_group"/>
+        </condition>
+    </extension>
+
+
+    <action application="esf_page_group" data="esf_page_group 224.0.0.100 34567 6001"/>
+
+
+    <action application="set" data="dtmf_type=inband"/>
+
+    <action application="set" data="dtmf_type=inband"/>
+    <action application="start_dtmf"/>
+    <action application="ivr" data="some_ivr"/>
+
+
+    <action application="export" data="nolocal:execute_on_answer=start_dtmf"/>
+    <action application="bridge"
+        data="sofia/gateway/pstn/${destination_number}"/>
+
+    <action application="bridge"
+        data="{execute_on_answer=start_dtmf}sofia/gateway/pstn/${destination_number}"/>
+
+
+    <action application="set" data="dtmf_type=info"/>
+
+
+    <extension name="Outbound Call">
+      <condition field="destination_number" expression="^(1[358].*)$">
+        <action application="bridge" data="sofia/gateway/gw30/$1"/>
+      </condition>
+    </extension>
+
+
+    <action application="set" data="gw=gw${expr(randomize(&x);ceil(random(30,39,&x)))"/>
+    <action application="bridge" data="sofia/gateway/${gw}/$1"/>
+
+
+    <action application="set"
+        data="gw1=gw${expr(randomize(&x);ceil(random(30,39,&x)))"/>
+    <action application="set"
+        data="gw2=gw${expr(randomize(&x);ceil(random(30,39,&x)))"/>
+    <action application="bridge"
+        data="sofia/gateway/${gw1}/$1|sofia/gateway/${gw2}/$1"/>
+
+
+
+    <extension name="gw">
+      <condition field="destination_number" expression="^(01[358].*)$">
+        <action application="bridge"
+            data="sofia/gateway/gw${distributor(dist1)}/$1" loop="2"/>
+      </condition>
+    </extension>
+
+
+    <action application="bridge"
+        data="sofia/gateway/gw${distributor(dist1 ${sofia(profile internal gwlist down)})}/$1"/>
+
+    <extension name="fax_receive">
+        <condition field="destination_number" expression="^9178$">
+            <action application="answer" />
+            <action application="playback" data="silence_stream://2000"/>
+            <action application="rxfax" data="/tmp/rxfax.tif"/>
+            <action application="hangup"/>
+        </condition>
+    </extension>
+
+    <extension name="fax_transmit">
+        <condition field="destination_number" expression="^9179$">
+            <action application="txfax" data="/tmp/txfax.tif"/>
+            <action application="hangup"/>
+        </condition>
+    </extension>
+
+
+    <extension name="Domain">
+      <condition field="destination_number" expression="^1234$">
+        <action application="log" data="INFO domain=${domain}"/>
+        <action application="log" data="INFO domain_name=${domain_name}"/>
+      </condition>
+    </extension>
+
+
+    <condition field="destination_number" expression="^0(.*)$">
+    <condition field="destination_number" expression="^11(2.*)$">
+    <condition field="destination_number" expression="^1234(852.*)$">
+    <condition field="destination_number" expression="^1234(52.*)$">
+    <condition field="destination_number" expression="^1234(.*)$">
+
+    <action application="voicemail" data="default ${domain_name} ${dialed_extension}"/>
+
+
+    <action application="bridge" data="loopback/app=voicemail:default ${domain_name} ${dialed_extension}"/>
+
+
+    <extension name="RTMP">
+        <condition field="destination_number" expression="^(1008)$">
+            <action application="bridge"
+                data="${rtmp_contact(default/$1@$${domain})}"/>
+        </condition>
+    </extension>
+
+
+    <extension name="Load Test">
+      <condition field="destination_number" expression="^service$">
+        <action application="answer"/>
+        <action application="playback" data="local_stream://moh"/>
+      </condition>
+    </extension>
+
+
+    <action application="sched_hangup" data="+60"/>
+

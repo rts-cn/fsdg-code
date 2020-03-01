@@ -1,0 +1,4 @@
+<gateway name="mx8">
+    <param name="realm" value="192.168.1.8"/>
+    <param name="register" value="false"/>
+</gateway>

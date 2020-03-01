@@ -1,0 +1,11 @@
+#ABNF 1.0;
+language zh-CN;
+tag-format <semantics/1.0-literals>;
+root $Name;
+
+$Name =
+        杜金房     {Seven Du}
+    |   孙中山     {Sun Yat-sen}
+    |   乔布斯     {Steve Jobs}
+    |   令狐冲     {Linghu Chong}
+    |   孙悟空     {Sun Wukong};

@@ -1,0 +1,77 @@
+
+	<extension name="park">
+		<condition field="destination_number" expression="^5900$">
+			<action application="set" data="fifo_music=$${hold_music}"/>
+			<action application="fifo" data="5900@${domain_name} in"/>
+		</condition>
+	</extension>
+
+	<extension name="unpark">
+		<condition field="destination_number" expression="^5901$">
+			<action application="answer"/>
+			<action application="fifo" data="5900@${domain_name} out nowait"/>
+		</condition>
+	</extension>
+
+	<extension name="fifo-test">
+		<condition field="destination_number" expression="^(1234)$">
+			<action application="set" data="hold_music=$${hold_music}"/>
+			<action application="fifo" data="book in"/>
+		</condition>
+	</extension>
+
+    <extension name="Agent Login">
+        <condition field="destination_number" expression="^5902$">
+            <action application="answer"/>
+            <action application="set" data="result=${fifo_member(add book user/${user_name})}"/>
+            <action application="playback" data="ivr/ivr-you_are_now_logged_in.wav"/>
+        </condition>
+    </extension>
+
+    <extension name="Agent Logout">
+        <condition field="destination_number" expression="^5903$">
+            <action application="answer"/>
+            <action application="set" data="result=${fifo_member(del book user/${user_name})}"/>
+            <action application="playback" data="ivr/ivr-you_are_now_logged_out.wav"/>
+        </condition>
+    </extension>
+
+    <extension name="unpark">
+        <condition field="destination_number" expression="^5902$">
+            <action application="answer"/>
+            <action application="fifo" data="5900@${domain_name} out wait"/>
+        </condition>
+    </extension>
+
+    <action application="set" data="fifo_priority=1" />
+    <action application="fifo" data="book in" />
+
+    <action application="set" data="fifo_bridge_uuid=9c3a1fee-fae2-4355-bceb-5064f2107983" />
+    <action application="fifo" data="book out" />
+
+    <action application="answer"/>
+    <action application="set" data="fifo_music=$${hold_music}"/>
+    <action application="set" data="tts_engine=tts_commandline"/>
+    <action application="set" data="tts_voice=Ting-Ting"/>
+    <action application="set" data="fifo_chime_list=say:座席全忙，继续等待请按1，转其他服务请按2"/>
+    <action application="set" data="fifo_chime_freq=15"/>
+    <action application="set" data="fifo_orbit_exten=1007:45"/>
+    <action application="set" data="fifo_orbit_dialplan=XML"/>
+    <action application="set" data="fifo_orbit_context=default"/>
+    <action application="set"
+       data="fifo_orbit_announce=say:为保证服务质量，您的电话可能被录音"/>
+    <action application="set" data="fifo_caller_exit_key=2"/>
+    <action application="set" data="fifo_caller_exit_to_orbit=true"/>
+    <action application="set" data="fifo_override_announce=say:tts_commandline:Ting-Ting:来电号码${caller_id_number}"/>
+    <action application="fifo" data="book in"/>
+
+    <extension name="Callcenter Example">
+        <condition field="destination_number" expression="^support$">
+            <action application="answer"/>
+            <action application="callcenter" data="support@default"/>
+        </condition>
+    </extension>
+
+    <action application="record_fsv" data="/tmp/testrecord.fsv"/>
+
+    <action application="play_fsv" data="/tmp/testrecord.fsv"/>

@@ -1,0 +1,39 @@
+<!-- 适于Copy & Paste -->
+
+<include>
+	<macro name="USER_BUSY">
+		<input pattern="(.*)">
+			<match>
+				<action function="speak-text" data="分机 $1 正在通话，请稍后再拨"/>
+			</match>
+		</input>
+	</macro>
+	<macro name="USER_NOT_REGISTERED">
+		<input pattern="(.*)">
+			<match>
+				<action function="speak-text" data="分机"/>
+				<action function="say" data="$1" method="iterated" type="number"/>
+				<action function="speak-text" data="暂时无法接通，请稍后再拨"/>
+			</match>
+		</input>
+  	</macro>
+</include>
+
+
+<macro name="HangupCause">
+	<input pattern="USER_BUSY">
+		<match>
+			<action function="speak-text" data="您拨的电话正在通话，请稍后再拨"/>
+		</match>
+	</input>
+	<input pattern="USER_NOT_REGISTERED">
+		<match>
+			<action function="speak-text" data="您拨的电话不在线，请稍后再拨"/>
+		</match>
+	</input>
+	<input pattern="(.*)">
+		<match>
+			<action function="speak-text" data="您拨的电话暂时无法接通，请稍后再拨"/>
+		</match>
+	</input>
+</macro>

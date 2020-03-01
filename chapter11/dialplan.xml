@@ -1,0 +1,280 @@
+<book>
+
+	<!-- 本XML文档涵盖了本章提到的大部分的XML，这不是一个完整的XML文档，适于 Copy & Paste 使用 -->
+
+
+    <extension name="incoming_call">
+        <condition field="destination_number" expression="^1234$">
+            <action application="answer" data=""/>
+            <action application="sleep" data="1000"/>
+            <action application="ivr" data="welcome"/>
+        </condition>
+    </extension>
+
+
+    <extension name="time_based_ivr">
+      <condition wday="2-6" hour="8:30-17:30">
+        <action application="ivr" data="ivr_day"/>
+        <anti-action application="ivr" data="ivr_night"/>
+      </condition>
+    </extension>
+
+
+    <extension name="time_based_ivr" continue="true">
+      <condition wday="2-6" hour="8:30-17:30">
+        <action application="set" data="ivr=ivr_day" inline="true"/>
+        <anti-action application="set" data="ivr=ivr_night" inline="true"/>
+      </condition>
+    </extension>
+
+
+    <extension name="ivr">
+      <condition field="destination_number" expression="^DID$">
+        <action application="answer" data=""/>
+        <action application="ivr" data="${ivr}"/>
+      </condition>
+    </extension>
+
+
+    <extension name="lang">
+      <condition field="destination_number" expression="^1234$">
+        <action application="answer"/>
+        <action application="playback" data="digits/1.wav"/>
+        <action application="playback" data="digits/2.wav"/>
+        <action application="playback" data="digits/3.wav"/>
+      </condition>
+    </extension>
+
+    <extension name="ivr_demo">
+        <condition field="destination_number" expression="^5000$">
+            <action application="set" data="language=zh"/>
+            <action application="answer"/>
+            <action application="sleep" data="2000"/>
+            <action application="ivr" data="demo_ivr"/>
+        </condition>
+    </extension>
+
+
+    <extension name="record">
+        <condition field="destination_number" expression="^rec(.*)$">
+            <action application="answer"/>
+            <action application="playback" data="tone_stream://%(100,1000,800)"/>
+            <action application="record" data="/tmp/$1.wav"/>
+        </condition>
+    </extension>
+
+    <extension name="record">
+        <condition field="destination_number" expression="^(100[0-9])$">
+            <action application="record_session" data="/tmp/record-$1.wav"/>
+            <action application="bridge" data="user/$1"/>
+        </condition>
+    </extension>
+
+    <action application="set" data="RECORD_STEREO=true"/>
+    <action application="record_session" data="/tmp/record-$1.wav"/>
+
+    <action application="playback" data="/tmp/test.wav"/>
+
+    <action application="playback" data="/tmp/test.wav"/>
+    <action application="playback" data="/tmp/test.au"/>
+    <action application="playback" data="/tmp/test.aiff"/>
+
+    <action application="playback" data="/tmp/test.mp3"/>
+
+    <action application="playback" data="shout://shoutcase-server/test.wav"/>
+
+    <action application="playback" data="/tmp/test"/>
+
+    <action application="playback" data="local_stram://moh"/>
+
+    <action application="playback" data="silence_stream://2000"/>
+
+    <action application="sleep" data="2"/>
+
+    <action application="playback" data="silence_stream://0"/>
+
+    <action application="playback" data="silence_stream://2000,1400"/>
+
+    <action application="playback" data="tone_stream://%(1000,4000,450)"/>
+
+    <action application="playback" data="tone_stream://%(2000,4000,440,480)"/>
+
+    <action application="playback"
+        data="tone_stream://%(400,200,400,450);%(400,2000,400,450)"/>
+
+    <action application="playback" data="tone_stream://%(1000,4000,450);loops=3"/>
+
+    <action application="playback"
+        data="file_string:///tmp/file1.wav!/tmp/file2.wav!/tmp/file3.wav"/>
+
+    <action application="set" data="playback_delimiter=|"/>
+    <action application="playback"
+        data="file_string:///tmp/file1.wav|/tmp/file2.wav|/tmp/file3!.wav"/>
+
+    <action application="set" data="playback_sleep_val=500"/>
+    <action application="playback" data="file1.wav!file2.wav"/>
+
+    <action application="playback" data="vlc:///tmp/test.mp3"/>
+
+    <action application="playback" data="vlc:///tmp/test.mp4"/>
+
+    <action application="playback" data="vlc://http://192.168.0.2/test.mp3"/>
+
+    <action application="playback" data="http://192.168.0.2/test.mp3"/>
+
+    <action application="playback" data="say:tts_commandline:Ting-Ting:欢迎使用FreeSWITCH"/>
+
+    <action application="set" data="tts_engine=tts_commandline"/>
+    <action application="set" data="tts_voice=Ting-Ting"/>
+    <action application="playback" data="say:欢迎阅读FreeSWITCH权威指南"/>
+
+    <action application="speak" data="tts_commandline|Ting-Ting|欢迎阅读FreeSWITCH权威指南"/>
+
+    <action application="playback" data="phrase:demo_ivr_main_menu"/>
+
+    <action application="phrase" data="demo_ivr_main_menu"/>
+
+    <action application="set" data="tts_engine=tts_commandline"/>
+    <action application="set" data="tts_voice=Ting-Ting"/>
+    <action application="read"
+        data="1 1 say:请您选择提示语言，1为普通话，2为英语"/>
+
+    <action application="endless_playback" data="/tmp/test.wav"/>
+
+    <action application="loop_playback" data="+3 /tmp/test.wav"/>
+
+    <action application="say" data="en number iterated 1234"/>
+
+    <action application="say" data="en NUMBER ITERATED 1234"/>
+    <action application="say" data="en NUMBER PRONOUNCED 1234"/>
+    <action application="say" data="en CURRENCY PRONOUNCED 1234.56"/>
+    <action application="say" data="en CURRENT_DATE PRONOUNCED ${strepoch()}"/>
+
+    <action application="say" data="zh NUMBER ITERATED 1234"/>
+    <action application="say" data="zh NUMBER PRONOUNCED 1234"/>
+    <action application="say" data="zh CURRENCY PRONOUNCED 1234.56"/>
+    <action application="say" data="zh CURRENT_DATE PRONOUNCED ${strepoch()}"/>
+
+    <action application="say" data="zh_CN CURRENCY PRONOUNCED 1234.56"/>
+
+    <action application="say" data="zh_CN CURRENCY PRONOUNCED 1234.5678"/>
+
+    <action application="say" data="zh NUMBER PRONOUNCED 1234"/>
+    <action application="playback" data="digits/point.wav"/>
+    <action application="say" data="zh NUMBER ITERATED 56"/>
+    <action application="playback" data="currency/yuan.wav"/>
+
+    <extension name="TTS">
+        <condition field="destination_number" expression="^1234$">
+            <action application="answer"/>
+            <action application="speak" data="flite|rms|Hello, Welcome to FreeSWITCH"/>
+        </condition>
+    </extension>
+
+    <action application="set" data="tts_engine=flite"/>
+    <action application="set" data="tts_voice=kal"/>
+    <action application="speak" data="Hello, Welcome to FreeSWITCH"/>
+
+    <extension name="TTS">
+        <condition field="destination_number" expression="^1234$">
+            <action application="answer"/>
+            <action application="set" data="tts_engine=tts_commandline"/>
+            <action application="set" data="tts_voice=Ting-Ting"/>
+            <action application="speak" data="欢迎使用FreeSWITCH"/>
+        </condition>
+    </extension>
+
+
+    <extension name="Free_Google_Text_To_Speech">
+        <condition field="destination_number" expression="^1234$">
+            <action application="answer" data=""/>
+            <action application="playback"
+               data="shout://translate.google.com/translate_tts?&tl=zh&ie=UTF-8&q=欢迎使用+FreeSWITCH"/>
+        </condition>
+    </extension>
+
+
+    <action application="playback"
+       data="shout://translate.google.com/translate_tts?&tl=zh&ie=UTF-8&q=欢迎使用"/>
+    <action application="playback"
+       data="shout://translate.google.com/translate_tts?&tl=en&q=FreeSWITCH"/>
+
+    <action application="playback"
+        data="http://translate.google.com/translate_tts?&tl=en&q=FreeSWITCH"/>
+
+    <action application="playback"
+        data="vlc/http://translate.google.com/translate_tts?&tl=en&q=FreeSWITCH"/>
+
+    <action application="playback" data="/tmp/${originate_disposition}.wav"/>
+
+    <action appliction="lua" data="/tmp/xxx.lua"/>
+
+    <action application="transfer" data="play-cause-${originate_disposition}"/>
+
+    <extension name="Local_Extension_play-cause">
+        <condition field="destination_number" expression="^play-cause-USER_BUSY$">
+            <action application="playback" data="/tmp/user-busy.wav"/>
+        </condition>
+    </extension>
+
+    <extension name="Local_Extension_play-cause">
+        <condition field="destination_number" expression="^play-cause-USER_NOT_REGISTERED$">
+            <action application="playback" data="/tmp/user-not-registered.wav"/>
+        </condition>
+    </extension>
+
+    <extension name="Local_Extension_play-cause">
+        <condition field="destination_number" expression="^play-cause(.*)$">
+            <action application="log" data="WARNING hangup cause: $1"/>
+            <!-- 对于其他各种情况，播放该文件 -->
+            <action application="playback" data="/tmp/sounds/unknown-error.wav"/>
+        </condition>
+    </extension>
+
+    <action application="playback" data="phrase:${originate_disposition}:$1"/>
+
+    <action application="playback" data="phrase:USER_BUSY:1009"/>
+
+    <action application="phrase" data="${originate_disposition},$1"/>
+
+    <action application="phrase" data="HangupCause,${originate_disposition}"/>
+
+    <action application="set" data="hangup_after_bridge=true"/>
+    <action application="set" data="continue_on_fail=true"/>
+
+    <action application="set" data="continue_on_fail=USER_BUSY,NO_ANSWER"/>
+
+    <extension name="call_forward_unconditional_set">
+      <condition field="destination_number" expression="^\*57\*([^#]*)#?$">
+        <action application="hash" data="insert/${domain_name}-cfwdu/${username}/$1"/>
+        <action application="answer"/>
+        <action application="playback" data="您登记的业务已经成功.wav"/>
+      </condition>
+    </extension>
+
+
+    <extension name="call_forward_unconditional_unset">
+      <condition field="destination_number" expression="^#57#?$">
+        <action application="hash" data="delete/${domain_name}-cfwdu/${username}"/>
+        <action application="answer"/>
+        <action application="playback" data="您登记的业务已经取消.wav"/>
+      </condition>
+    </extension>
+
+
+    <extension name="call_forward_unconditional_check" continue="true">
+      <condition>
+        <action application="info" data=""/>
+        <action application="set" inline="true"
+            data="cfwdu=${hash(select/${domain_name}-cfwdu/${destination_number})}"/>
+      </condition>
+    </extension>
+
+
+    <extension name="call_forward_unconditional_check2" continue="true">
+      <condition field="${cfwdu}" expression="^10[01][0-9]">
+        <action application="bridge" data="user/${cfwdu}"/>
+      </condition>
+    </extension>
+
+</book>

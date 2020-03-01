@@ -1,0 +1,19 @@
+#JSGF V1.0;
+
+/**
+  * JSGF Grammar for names
+  */
+
+grammar names;
+
+
+<du> = 杜;
+<jin> = 金;
+<fang> = 房;
+<孙> = 孙;
+<中> = 中;
+<山> = 山;
+
+public <jf> = <jin><fang>;
+public <djf> = <du><jin><fang>;
+public <szs> = <孙> <中> <山>;

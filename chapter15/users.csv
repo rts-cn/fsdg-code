@@ -1,0 +1,4 @@
+SEQUENTIAL
+1001;[authentication username=1001 password=1234]
+1002;[authentication username=1002 password=1234]
+1003;[authentication username=1003 password=1234]

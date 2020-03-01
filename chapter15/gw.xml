@@ -1,0 +1,14 @@
+    <gateway name="gw30">
+            <param name="realm" value="218.56.x.x"/>
+            <param name="username" value="xxxxxx30"/>
+            <param name="password" value="xxxx"/>
+            <param name="register" value="true"/>
+    </gateway>
+
+    <gateway name="yt31">
+            <param name="realm" value="218.56.x.x"/>
+            <param name="username" value="xxxxxx31"/>
+            <param name="password" value="xxxx"/>
+            <param name="register" value="true"/>
+    </gateway>
+

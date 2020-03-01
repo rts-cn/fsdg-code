@@ -1,0 +1,12 @@
+    <list name="dist1" total-weight="10">
+      <node name="30" weight="1"/>
+      <node name="31" weight="1"/>
+      <node name="32" weight="1"/>
+      <node name="33" weight="1"/>
+      <node name="34" weight="1"/>
+      <node name="35" weight="1"/>
+      <node name="36" weight="1"/>
+      <node name="37" weight="1"/>
+      <node name="38" weight="1"/>
+      <node name="39" weight="1"/>
+    </list>

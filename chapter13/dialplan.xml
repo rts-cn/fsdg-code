@@ -1,0 +1,115 @@
+<!-- 本章中的Dialplan本身都是些伪代码，但列在这里方便Copy & Paste，并且修改 -->
+
+		<extension name="public_extensions">
+			<condition field="destination_number" expression="^(10[01][0-9])$">
+				<action application="transfer" data="$1 XML default"/>
+			</condition>
+		</extension>
+
+
+		<extension name="D">
+			<condition field="destination_number" expression="^([B-Z].*)$">
+				<action application="bridge" data="sofia/external/sip:$1@192.168.1.D:5080"/>
+			</condition>
+		</extension>
+
+
+		<extension name="D">
+			<condition field="destination_number" expression="^D(.*)$">
+				<action application="transfer" data="$1 XML default"/>
+			</condition>
+		</extension>
+
+
+		<extension name="D">
+			<condition field="destination_number" expression="^([A-CE-Z])(.*)$">
+				<action application="bridge" data="sofia/external/sip:$2@192.168.1.$1:5080"/>
+			</condition>
+		</extension>
+
+
+
+		<action application="set" data="bypass_media=true"/>
+
+
+		<extension name="DE">
+			<condition field="destination_number" expression="^([B-Z].*)$">
+				<action application="bridge"
+					data="sofia/external/sip:$1@IP.D:5080|sofia/external/sip:$1@IP.E:5080"/>
+			</condition>
+		</extension>
+
+		<extension name="DE">
+			<condition field="destination_number" expression="^([B-Z].*[13579])$">
+				<action application="bridge"
+					data="sofia/external/sip:$1@IP.D:5080|sofia/external/sip:$1@IP.E:5080"/>
+			</condition>
+		</extension>
+
+		<extension name="ED">
+			<condition field="destination_number" expression="^([B-Z].*[24680])$">
+				<action application="bridge"
+					data="sofia/external/sip:$1@IP.E:5080|sofia/external/sip:$1@IP.D:5080"/>
+			</condition>
+		</extension>
+
+
+		<include>
+				<gateway name="gw_A">
+						<param name="realm" value="192.168.1.A"/>
+						<param name="username" value="1000"/>
+						<param name="password" value="1234"/>
+				</gateway>
+		</include>
+
+
+		<extension name="ga_A">
+				<condition field="destination_number" expression="^0(.*)$">
+						<action application="bridge" data="sofia/gateway/gw_A/$1"/>
+				</condition>
+		</extension>
+
+
+		<variable name="effective_caller_id_number" value="1000"/>
+
+		<variable name="effective_caller_id_number" value="600"/>
+
+
+		<extension name="ga_A">
+			<condition field="destination_number" expression="^0(.*)$">
+				<action application="set"
+					data="effective_caller_id_number=1000${caller_id_number}"/>
+				<action application="bridge" data="sofia/gateway/gw_A/$1"/>
+			</condition>
+		</extension>
+
+
+		<extension name="F-DID">
+			<condition field="destination_number" expression="^(1000.*)$">
+				<action application="bridge" data="..."/>
+			</condition>
+		</extension>
+
+
+		<action application="bridge" data="user/1000"/>
+
+
+		<extension name="F-DID">
+			<condition field="destination_number" expression="^(1000.*)$">
+				<action application="bridge" data="${regex(${sofia_contact(internal/1005@$${domain})}|^(.*)sip:gw\+xyt@(.*)|%1sip:$1@%2)}"/>
+			</condition>
+		</extension>
+
+
+		<extension name="F-GW">
+			<condition field="destination_number" expression="^(0.*)$">
+				<action application="bridge" data="${regex(${sofia_contact(internal/1005@$${domain})}|^(.*)sip:gw\+xyt@(.*)|$1sip:${destination_number}@$2)}"/>
+			</condition>
+		</extension>
+
+
+		<extension name="F-GW">
+			<condition field="destination_number" expression="^(0.*)$">
+				<action application="bridge" data="sofia/gateway/G/$1"/>
+			</condition>
+		</extension>

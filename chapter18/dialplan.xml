@@ -1,0 +1,5 @@
+	<extension name="socket">
+		<condition field="destination_number" expression="^1234">
+			<action application="socket" data="localhost:8040 async full"/>
+		</condition>
+	</extension>

@@ -1,0 +1,19 @@
+<include>
+    <menus>
+        <menu name="welcome"
+            greet-long="welcome.wav"
+            greet-short="welcom_short.wav"
+            invalid-sound="ivr/ivr-that_was_an_invalid_entry.wav"
+            exit-sound="voicemail/vm-goodbye.wav"
+            timeout="15000"
+            max-failures="3"
+            max-timeouts="3"
+            inter-digit-timeout="2000"
+            digit-len="4">
+
+            <entry action="menu-exec-app" digits="0" param="transfer 1000 XML default"/>
+            <entry action="menu-exec-app" digits="/^(10[01][0-9])$/"
+                   param="transfer $1 XML default"/>
+        </menu>
+    </menus>
+</include>

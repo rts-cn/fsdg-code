@@ -1,0 +1,35 @@
+commit 1bfda1ecfc5d12f8a1e557eea1570f561da328f5
+Author: Anthony Minessale <anthm@freeswitch.org>
+Date:   Mon Jun 18 10:30:33 2012 -0500
+
+    FS-4318 --resolve
+
+diff --git a/src/mod/applications/mod_conference/mod_conference.c b/src/mod/applications/mod_conference/mod_conference.c
+index c5a05c7..f46b8d9 100644
+--- a/src/mod/applications/mod_conference/mod_conference.c
++++ b/src/mod/applications/mod_conference/mod_conference.c
+@@ -1433,7 +1433,14 @@ static void *SWITCH_THREAD_FUNC conference_video_thread_run(switch_thread_t *thr
+ 		want_refresh = 0;
+ 
+ 		for (imember = conference->members; imember; imember = imember->next) {
+-			switch_channel_t *ichannel = switch_core_session_get_channel(imember->session);
++			switch_core_session_t *isession = imember->session;
++			switch_channel_t *ichannel;
++
++			if (!isession || !switch_core_session_read_lock(isession)) {
++				continue;
++			}
++
++			ichannel = switch_core_session_get_channel(imember->session);
+ 
+ 			if (switch_channel_test_flag(ichannel, CF_VIDEO_REFRESH_REQ)) {
+ 				want_refresh++;
+@@ -1444,6 +1451,8 @@ static void *SWITCH_THREAD_FUNC conference_video_thread_run(switch_thread_t *thr
+ 				has_vid++;
+ 				switch_core_session_write_video_frame(imember->session, vid_frame, SWITCH_IO_FLAG_NONE, 0);
+ 			}
++
++			switch_core_session_rwunlock(isession);
+ 		}
+ 		
+ 		if (want_refresh) {

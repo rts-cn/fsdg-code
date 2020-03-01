@@ -1,0 +1,18 @@
+commit f255f65a82e2cfe1aed1f44aa2459e5faaed150e
+Author: Seven Du <dujinfang@gmail.com>
+Date:   Thu Aug 1 09:50:51 2013 +0800
+
+    add SHORT_DATE_TIME support
+
+diff --git a/src/mod/say/mod_say_zh/mod_say_zh.c b/src/mod/say/mod_say_zh/mod_say_zh.c
+index 87ab004..ac5ba32 100644
+--- a/src/mod/say/mod_say_zh/mod_say_zh.c
++++ b/src/mod/say/mod_say_zh/mod_say_zh.c
+@@ -497,6 +497,7 @@ static switch_status_t zh_say(switch_core_session_t *session, char *tosay, switc
+ 	case SST_CURRENT_DATE:
+ 	case SST_CURRENT_TIME:
+ 	case SST_CURRENT_DATE_TIME:
++	case SST_SHORT_DATE_TIME:
+ 		say_cb = zh_say_time;
+ 		break;
+ 	case SST_IP_ADDRESS:

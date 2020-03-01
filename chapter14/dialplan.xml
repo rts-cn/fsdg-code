@@ -1,0 +1,81 @@
+
+    <extension name="IMS gateway outbound">
+        <condition field="destination_number" expression="^(0.*)$">
+            <action application="bridge" data="sofia/gateway/ims/$1"/>
+        </condition>
+    </extension>
+
+
+    <action application="set" data="effective_caller_id_number=911"/>
+    <action application="bridge" data="sofia/gateway/ims/$1"/>
+
+
+    <action application="set" data="effective_caller_id_number=xxxxxxxx"/>
+    <action application="bridge" data="sofia/gateway/ims/$1"/>
+
+
+    <extension name="IMS gateway outbound">
+        <condition field="destination_number" expression="^(xxxxxxxx)$">
+            <action application="answer" data=""/>
+            <action application="ivr" data="demo_ivr"/>
+        </condition>
+    </extension>
+
+
+    <extension name="IMS gateway outbound">
+        <condition field="destination_number" expression="^xxxx([0-9]{4})$">
+            <action application="answer" data=""/>
+            <action application="bridge" data="user/$1"/>
+        </condition>
+    </extension>
+
+
+    <action application="bridge" data="{sip_h_P-Early-Media=supported}sofia/gateway/ims/$1"/>
+
+    <extension name="DID">
+        <condition field="destination_number" expression="^88888888$">
+            <action application="info" data=""/>
+            <action application="ivr" data="welcome"/>
+        </condition>
+    </extension>
+
+
+    <extension name="DID">
+        <condition field="destination_number" expression="^0(.*)$">
+            <action application="bridge" data="sofia/gateway/mx8/$1"/>
+        </condition>
+    </extension>
+
+
+    <extension name="DID">
+        <condition field="destination_number" expression="^0(.*)$">
+            <action application="bridge" data="sofia/external/$1@192.168.1.8"/>
+        </condition>
+    </extension>
+
+
+    <extension name="E1">
+        <condition field="destination_number" expression="^0(.*)$">
+            <action application="bridge" data="freetdm/1/a/$1"/>
+        </condition>
+    </extension>
+
+
+    <extension name="MTG1000">
+        <condition field="destination_number" expression="^0(.*)$">
+            <action application="bridge" data="sofia/external/$1@192.168.1.111"/>
+        </condition>
+    </extension>
+
+    <extension name="Dial specific trunk">
+        <condition field="destination_number" expression="^\*22([0-9])([0-9])(.*)$">
+            <action application="bridge" data="freetdm/$1/$2/$3"/>
+        </condition>
+    </extension>
+
+
+    <action application="bridge" data="sofia/external/6000@192.168.7.99"/>
+
+    <action application="bridge" data="h323/6000@192.168.7.9"/>
+
+    <action application="bridge" data="opal/h323:1000@192.168.7.9"/>

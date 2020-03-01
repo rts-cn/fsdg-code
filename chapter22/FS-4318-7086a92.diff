@@ -1,0 +1,19 @@
+commit 7086a92f9b1be3d72add3247b42a54f0b8f4a8e9
+Author: Anthony Minessale <anthm@freeswitch.org>
+Date:   Sun Jun 24 15:05:59 2012 -0500
+
+    FS-4318 try this, success is 0 so that original patch was wrong
+
+diff --git a/src/mod/applications/mod_conference/mod_conference.c b/src/mod/applications/mod_conference/mod_conference.c
+index f46b8d9..15d927f 100644
+--- a/src/mod/applications/mod_conference/mod_conference.c
++++ b/src/mod/applications/mod_conference/mod_conference.c
+@@ -1436,7 +1436,7 @@ static void *SWITCH_THREAD_FUNC conference_video_thread_run(switch_thread_t *thr
+ 			switch_core_session_t *isession = imember->session;
+ 			switch_channel_t *ichannel;
+ 
+-			if (!isession || !switch_core_session_read_lock(isession)) {
++			if (!isession || switch_core_session_read_lock(isession) != SWITCH_STATUS_SUCCESS) {
+ 				continue;
+ 			}
+ 

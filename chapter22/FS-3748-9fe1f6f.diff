@@ -1,0 +1,54 @@
+commit 9fe1f6fdcb87bbd3169fec9199df36edb3c41c77
+Author: Anthony Minessale <anthm@freeswitch.org>
+Date:   Tue Dec 6 18:12:48 2011 -0600
+
+    FS-3748 --resolve
+
+diff --git a/libs/sofia-sip/.update b/libs/sofia-sip/.update
+index 9101269..1b9f64b 100644
+--- a/libs/sofia-sip/.update
++++ b/libs/sofia-sip/.update
+@@ -1 +1 @@
+-Tue Nov 22 18:16:53 CST 2011
++Tue Dec  6 18:12:20 CST 2011
+diff --git a/libs/sofia-sip/libsofia-sip-ua/sdp/sdp_parse.c b/libs/sofia-sip/libsofia-sip-ua/sdp/sdp_parse.c
+index 6455f4b..027544a 100644
+--- a/libs/sofia-sip/libsofia-sip-ua/sdp/sdp_parse.c
++++ b/libs/sofia-sip/libsofia-sip-ua/sdp/sdp_parse.c
+@@ -1389,6 +1389,10 @@ void sdp_media_transport(sdp_media_t *m, char const *s)
+   else if (su_casematch(s, "udptl"))
+     /* Lower case - be compatible with people living by T.38 examples */
+     m->m_proto = sdp_proto_udptl, m->m_proto_name = "udptl";
++  else if (su_casematch(s, "TCP/MSRP"))
++    m->m_proto = sdp_proto_msrp, m->m_proto_name = "TCP/MSRP";
++  else if (su_casematch(s, "TCP/TLS/MSRP"))
++    m->m_proto = sdp_proto_msrps, m->m_proto_name = "TCP/TLS/MSRP";
+   else if (su_casematch(s, "UDP"))
+     m->m_proto = sdp_proto_udp, m->m_proto_name = "UDP";
+   else if (su_casematch(s, "TCP"))
+diff --git a/libs/sofia-sip/libsofia-sip-ua/sdp/sdp_print.c b/libs/sofia-sip/libsofia-sip-ua/sdp/sdp_print.c
+index e94c6b6..87c706b 100644
+--- a/libs/sofia-sip/libsofia-sip-ua/sdp/sdp_print.c
++++ b/libs/sofia-sip/libsofia-sip-ua/sdp/sdp_print.c
+@@ -591,6 +591,8 @@ static void print_media(sdp_printer_t *p,
+     case sdp_proto_rtp:   proto = "RTP/AVP"; break;
+     case sdp_proto_srtp:  proto = "RTP/SAVP"; break;
+     case sdp_proto_udptl: proto = "udptl"; break;
++    case sdp_proto_msrp:  proto = "TCP/MSRP"; break;
++    case sdp_proto_msrps:  proto = "TCP/TLS/MSRP"; break;
+     case sdp_proto_tls:   proto = "tls"; break;
+     default:              proto = m->m_proto_name; break;
+     }
+diff --git a/libs/sofia-sip/libsofia-sip-ua/sdp/sofia-sip/sdp.h b/libs/sofia-sip/libsofia-sip-ua/sdp/sofia-sip/sdp.h
+index bb39bca..e4af383 100644
+--- a/libs/sofia-sip/libsofia-sip-ua/sdp/sofia-sip/sdp.h
++++ b/libs/sofia-sip/libsofia-sip-ua/sdp/sofia-sip/sdp.h
+@@ -243,6 +243,8 @@ typedef enum
+   sdp_proto_rtp = 256,			/**< RTP/AVP */
+   sdp_proto_srtp = 257,			/**< RTP/SAVP  */
+   sdp_proto_udptl = 258,		/**< UDPTL. @NEW_1_12_4. */
++  sdp_proto_msrp =  259,		/**< TCP/MSRP @NEW_MSRP*/
++  sdp_proto_msrps = 260,		/**< TCP/TLS/MSRP @NEW_MSRP*/
+   sdp_proto_tls = 511,			/**< TLS over TCP */
+   sdp_proto_any = 512		        /**< * wildcard */
+ } sdp_proto_e;

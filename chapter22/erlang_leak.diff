@@ -1,0 +1,14 @@
+diff --git a/src/mod/event_handlers/mod_erlang_event/mod_erlang_event.c b/src/mod/event_handlers/mod_erlang_event/mod_erlang_event.c
+index 9a09e80..cd58d95 100644
+--- a/src/mod/event_handlers/mod_erlang_event/mod_erlang_event.c
++++ b/src/mod/event_handlers/mod_erlang_event/mod_erlang_event.c
+@@ -650,6 +650,9 @@ static switch_status_t check_attached_sessions(listener_t *listener)
+ 	}
+ 
+ 	switch_thread_rwlock_unlock(listener->session_rwlock);
++
++	switch_event_destroy(&event);
++
+ 	if (prefs.done) {
+ 		return SWITCH_STATUS_FALSE;	/* we're shutting down */
+ 	} else {

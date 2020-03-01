@@ -1,0 +1,16 @@
+    <fifos>
+        <fifo name="book" importance="0">
+          <member timeout="60" simo="1" lag="5">user/1005</member>
+          <member timeout="60" simo="1" lag="5">user/1006</member>
+        </fifo>
+    </fifos>
+
+
+
+    <member>{origination_call_id_name=7777}user/1007</member>
+
+    <member>{my_worker_number=1234}user/1007</member>
+
+    <member>sofia/gateway/pstn/139xxxxxxxx</member>
+
+    <member>{ignore_early_media=true}sofia/gateway/pstn/139xxxxxxxx</member>

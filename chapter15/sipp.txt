@@ -1,0 +1,8 @@
+sipp -sn uac -r 1 -d 10000 -rtp_echo 192.168.1.A:5080
+
+sipp -sf dft_cap.xml -r 1 -d 10000 -rtp_echo 192.168.1.A:5080
+
+sipp -sf dft_cap.xml -s load_test -r 1 -d 10000 -rtp_echo 192.168.1.A:5080
+
+sipp -aa -sf branchc.xml -inf users.csv -r 10 -p 6060 192.168.7.102
+

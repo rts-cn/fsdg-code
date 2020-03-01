@@ -1,0 +1,19 @@
+commit c4e7c302f9e86e8c25d1a1ebb88938d919da8566
+Author: Anthony Minessale <anthm@freeswitch.org>
+Date:   Sat Apr 27 08:19:18 2013 -0500
+
+    FS-5351 --resolve
+
+diff --git a/src/mod/endpoints/mod_sofia/mod_sofia.c b/src/mod/endpoints/mod_sofia/mod_sofia.c
+index 1805a7f..df4c880 100644
+--- a/src/mod/endpoints/mod_sofia/mod_sofia.c
++++ b/src/mod/endpoints/mod_sofia/mod_sofia.c
+@@ -968,7 +968,7 @@ static switch_status_t sofia_write_video_frame(switch_core_session_t *session, s
+ 		return SWITCH_STATUS_SUCCESS;
+ 	}
+ 
+-	if (switch_core_media_write_frame(session, frame, flags, stream_id, SWITCH_MEDIA_TYPE_VIDEO)) {
++	if (SWITCH_STATUS_SUCCESS == switch_core_media_write_frame(session, frame, flags, stream_id, SWITCH_MEDIA_TYPE_VIDEO)) {
+ 		return SWITCH_STATUS_SUCCESS;
+ 	}
+ 
